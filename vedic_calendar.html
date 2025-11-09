@@ -696,36 +696,76 @@
             {date: new Date(2026, 2, 16), name: "Mercury Asta", type: "planet", details: "Mercury star ends - March 16, 2026, Monday at 05:51 AM"},
             {date: new Date(2026, 4, 23), name: "Mercury Asta", type: "planet", details: "Mercury star ends - May 23, 2026, Saturday at 07:58 PM"},
             {date: new Date(2026, 3, 17), name: "Saturn Asta", type: "planet", details: "Saturn star setting asta - April 17, 2026, Friday at 05:25 AM"},
-            {date: new Date(2026, 2, 13), name: "Saturn Begins", type: "planet", details: "Saturn star setting begins - March 13, 2026, Friday at 07:30 PM"}
+            {date: new Date(2026, 2, 13), name: "Saturn Begins", type: "planet", details: "Saturn star setting begins - March 13, 2026, Friday at 07:30 PM"},
+            {date: new Date(2026, 0, 19), name: "Venus Begins", type: "planet", details: "Venus star setting begins - January 19, 2026, Friday at 07:20 PM"},
+            {date: new Date(2026, 9, 15), name: "Venus Begins", type: "planet", details: "Venus star setting begins - October 15, 2026, Monday at 06:43 AM"},
+            {date: new Date(2026, 1, 10), name: "Venus Asta", type: "planet", details: "Venus star set ends - February 10, 2026, Saturday at 05:50 AM"},
+            {date: new Date(2026, 11, 7), name: "Venus Asta", type: "planet", details: "Venus star set ends - December 7, 2026, Friday at 07:02 PM"}
         ];
 
-        // Dwadashi Tithi Events (from Dwadashi tithi.txt)
+        // Dwadashi Tithi Events (from Dwadashi tithi.txt) - Added for both start and end dates
         const tithiEvents = [
+            // December
             {date: new Date(2026, 11, 31), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Dec 31, 5:01 am - Jan 01, 1:48 am"},
+            {date: new Date(2026, 0, 1), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Dec 31, 5:01 am - Jan 01, 1:48 am"},
             {date: new Date(2026, 11, 4), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Dec 04, 11:45 pm - Dec 06, 12:52 am"},
+            {date: new Date(2026, 11, 5), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Dec 04, 11:45 pm - Dec 06, 12:52 am"},
             {date: new Date(2026, 11, 20), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Dec 20, 8:15 pm - Dec 21, 5:36 pm"},
+            {date: new Date(2026, 11, 21), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Dec 20, 8:15 pm - Dec 21, 5:36 pm"},
+            // January
             {date: new Date(2026, 0, 14), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jan 14, 5:53 pm - Jan 15, 8:17 pm"},
+            {date: new Date(2026, 0, 15), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jan 14, 5:53 pm - Jan 15, 8:17 pm"},
             {date: new Date(2026, 0, 29), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Jan 29, 1:55 pm - Jan 30, 11:09 am"},
+            {date: new Date(2026, 0, 30), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Jan 29, 1:55 pm - Jan 30, 11:09 am"},
+            // February
             {date: new Date(2026, 1, 13), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Feb 13, 2:26 pm - Feb 14, 4:02 pm"},
+            {date: new Date(2026, 1, 14), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Feb 13, 2:26 pm - Feb 14, 4:02 pm"},
             {date: new Date(2026, 1, 27), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi (Govinda Dwadashi) - Feb 27, 10:33 pm - Feb 28, 8:43 pm"},
+            {date: new Date(2026, 1, 28), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi (Govinda Dwadashi) - Feb 27, 10:33 pm - Feb 28, 8:43 pm"},
+            // March
             {date: new Date(2026, 2, 15), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Mar 15, 9:17 am - Mar 16, 9:41 am"},
+            {date: new Date(2026, 2, 16), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Mar 15, 9:17 am - Mar 16, 9:41 am"},
             {date: new Date(2026, 2, 29), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Mar 29, 7:46 am - Mar 30, 7:10 am"},
+            {date: new Date(2026, 2, 30), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Mar 29, 7:46 am - Mar 30, 7:10 am"},
+            // April
             {date: new Date(2026, 3, 14), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Apr 14, 1:09 am - Apr 15, 12:12 am"},
+            {date: new Date(2026, 3, 15), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Apr 14, 1:09 am - Apr 15, 12:12 am"},
             {date: new Date(2026, 3, 27), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Apr 27, 6:16 pm - Apr 28, 6:52 pm"},
+            {date: new Date(2026, 3, 28), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Apr 27, 6:16 pm - Apr 28, 6:52 pm"},
+            // May
             {date: new Date(2026, 4, 13), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - May 13, 1:30 pm - May 14, 11:21 am"},
+            {date: new Date(2026, 4, 14), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - May 13, 1:30 pm - May 14, 11:21 am"},
             {date: new Date(2026, 4, 27), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - May 27, 6:22 am - May 28, 7:57 am"},
+            {date: new Date(2026, 4, 28), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - May 27, 6:22 am - May 28, 7:57 am"},
+            // June
             {date: new Date(2026, 5, 11), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jun 11, 10:36 pm - Jun 12, 7:37 pm"},
+            {date: new Date(2026, 5, 12), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jun 11, 10:36 pm - Jun 12, 7:37 pm"},
             {date: new Date(2026, 5, 25), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi (Rama Lakshmana Dwadashi) - Jun 25, 8:09 pm - Jun 26, 10:22 pm"},
+            {date: new Date(2026, 5, 26), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi (Rama Lakshmana Dwadashi) - Jun 25, 8:09 pm - Jun 26, 10:22 pm"},
+            // July
             {date: new Date(2026, 6, 11), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jul 11, 5:23 am - Jul 12, 2:04 am"},
+            {date: new Date(2026, 6, 12), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jul 11, 5:23 am - Jul 12, 2:04 am"},
             {date: new Date(2026, 6, 25), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Jul 25, 11:34 am - Jul 26, 1:58 pm"},
+            {date: new Date(2026, 6, 26), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Jul 25, 11:34 am - Jul 26, 1:58 pm"},
+            // August
             {date: new Date(2026, 7, 9), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Aug 09, 11:05 am - Aug 10, 8:01 am"},
+            {date: new Date(2026, 7, 10), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Aug 09, 11:05 am - Aug 10, 8:01 am"},
             {date: new Date(2026, 7, 24), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Aug 24, 4:19 am - Aug 25, 6:21 am"},
+            {date: new Date(2026, 7, 25), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Aug 24, 4:19 am - Aug 25, 6:21 am"},
+            // September
             {date: new Date(2026, 8, 7), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Sep 07, 5:04 pm - Sep 08, 2:43 pm"},
+            {date: new Date(2026, 8, 8), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Sep 07, 5:04 pm - Sep 08, 2:43 pm"},
             {date: new Date(2026, 8, 22), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Sep 22, 9:43 pm - Sep 23, 10:51 pm"},
+            {date: new Date(2026, 8, 23), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Sep 22, 9:43 pm - Sep 23, 10:51 pm"},
+            // October
             {date: new Date(2026, 9, 7), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Oct 07, 12:35 am - Oct 07, 11:17 pm"},
             {date: new Date(2026, 9, 22), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Oct 22, 2:48 pm - Oct 23, 2:36 pm"},
+            {date: new Date(2026, 9, 23), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Oct 22, 2:48 pm - Oct 23, 2:36 pm"},
+            // November
             {date: new Date(2026, 10, 5), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi (Govatsa Dwadashi, Guru Dwadashi) - Nov 05, 10:36 am - Nov 06, 10:31 am"},
-            {date: new Date(2026, 10, 21), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Nov 21, 6:32 am - Nov 22, 4:57 am"}
+            {date: new Date(2026, 10, 6), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi (Govatsa Dwadashi, Guru Dwadashi) - Nov 05, 10:36 am - Nov 06, 10:31 am"},
+            {date: new Date(2026, 10, 21), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Nov 21, 6:32 am - Nov 22, 4:57 am"},
+            {date: new Date(2026, 10, 22), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Nov 21, 6:32 am - Nov 22, 4:57 am"}
         ];
 
         let currentMonth = new Date().getMonth();
