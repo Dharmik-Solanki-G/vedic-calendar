@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vedic Calendar 2026</title>
+    <title>Vedic Calendar 2026 - Complete</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -16,14 +16,14 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f5f5f5;
-            padding: 40px 20px;
+            padding: 20px 10px;
         }
 
         .calendar-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            padding: 40px;
+            padding: 30px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
@@ -31,17 +31,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .month-year {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .month-name {
-            font-size: 48px;
+            font-size: clamp(32px, 5vw, 48px);
             font-weight: 700;
             color: #333;
             letter-spacing: -1px;
@@ -50,15 +53,16 @@
         .year-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .year-badge {
             background: #333;
             color: white;
-            padding: 8px 24px;
+            padding: 8px 20px;
             border-radius: 50px;
-            font-size: 24px;
+            font-size: clamp(18px, 3vw, 24px);
             font-weight: 600;
         }
 
@@ -67,7 +71,7 @@
             gap: 10px;
         }
 
-        .nav-btn {
+        .nav-btn, .download-btn {
             width: 40px;
             height: 40px;
             border: 2px solid #ddd;
@@ -79,9 +83,10 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            touch-action: manipulation;
         }
 
-        .nav-btn:hover {
+        .nav-btn:hover, .download-btn:hover {
             border-color: #333;
             background: #f5f5f5;
         }
@@ -89,13 +94,12 @@
         .download-btn {
             background: #333;
             color: white;
-            border: none;
+            border-color: #333;
             padding: 10px 20px;
             border-radius: 25px;
-            cursor: pointer;
+            width: auto;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.2s;
         }
 
         .download-btn:hover {
@@ -104,13 +108,14 @@
 
         .calendar-layout {
             display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 40px;
+            grid-template-columns: 1fr minmax(300px, 400px);
+            gap: 30px;
         }
 
         .calendar-grid {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .day-headers {
@@ -123,9 +128,9 @@
         .day-header {
             text-align: center;
             font-weight: 700;
-            font-size: 14px;
+            font-size: clamp(12px, 2vw, 14px);
             color: #666;
-            padding: 15px;
+            padding: 12px 8px;
             background: #f9f9f9;
         }
 
@@ -138,20 +143,23 @@
 
         .date-cell {
             background: white;
-            min-height: 120px;
-            padding: 10px;
+            min-height: clamp(100px, 15vw, 140px);
+            padding: 8px 6px;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
+            overflow: hidden;
         }
 
         .date-cell:hover {
             background: #f9f9f9;
+            z-index: 1;
         }
 
         .date-cell.selected {
             background: #e3f2fd;
             border: 2px solid #2196F3;
+            z-index: 2;
         }
 
         .date-cell.empty {
@@ -160,10 +168,10 @@
         }
 
         .date-number {
-            font-size: 18px;
+            font-size: clamp(14px, 2.5vw, 18px);
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .date-cell.empty .date-number {
@@ -171,42 +179,29 @@
         }
 
         .period-info {
-            font-size: 10px;
+            font-size: clamp(8px, 1.5vw, 10px);
             color: #666;
-            line-height: 1.3;
-            margin-top: 4px;
+            line-height: 1.2;
+            margin-top: 2px;
         }
 
-        .period-begins {
-            color: #2e7d32;
-            font-weight: 600;
-        }
-
-        .period-ends {
-            color: #c62828;
-            font-weight: 600;
-        }
-
-        .period-purnima {
-            color: #1565c0;
-            font-weight: 600;
-        }
-
-        .period-amavasya {
-            color: #7b1fa2;
-            font-weight: 600;
-        }
-
-        .period-yoga {
-            color: #f57c00;
-            font-weight: 600;
-        }
+        .period-begins { color: #2e7d32; font-weight: 600; }
+        .period-ends { color: #c62828; font-weight: 600; }
+        .period-purnima { color: #1565c0; font-weight: 600; }
+        .period-amavasya { color: #7b1fa2; font-weight: 600; }
+        .period-yoga { color: #f57c00; font-weight: 600; }
+        .period-festival { color: #d32f2f; font-weight: 600; }
+        .period-transit { color: #1976d2; font-weight: 600; }
+        .period-planet { color: #388e3c; font-weight: 600; }
+        .period-tithi { color: #7b1fa2; font-weight: 600; }
 
         .notes-section {
             background: #fafafa;
             border: 1px solid #e0e0e0;
-            padding: 30px;
+            padding: 20px;
             position: relative;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
         }
 
         .notes-section::before {
@@ -216,22 +211,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                repeating-linear-gradient(
-                    transparent,
-                    transparent 31px,
-                    #e0e0e0 31px,
-                    #e0e0e0 32px
-                );
+            background-image: repeating-linear-gradient(transparent, transparent 31px, #e0e0e0 31px, #e0e0e0 32px);
             pointer-events: none;
             opacity: 0.3;
         }
 
         .notes-header {
-            font-size: 24px;
+            font-size: clamp(20px, 3vw, 24px);
             font-weight: 700;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
@@ -239,22 +228,23 @@
         .notes-content {
             position: relative;
             z-index: 1;
-            font-size: 14px;
-            line-height: 2;
+            font-size: clamp(12px, 2vw, 14px);
+            line-height: 1.8;
             color: #333;
         }
 
         .notes-date {
             font-weight: 700;
-            font-size: 18px;
+            font-size: clamp(16px, 2.5vw, 18px);
             margin-bottom: 15px;
             color: #333;
         }
 
         .notes-detail {
-            margin-bottom: 12px;
-            padding-left: 20px;
+            margin-bottom: 10px;
+            padding-left: 18px;
             position: relative;
+            font-size: clamp(11px, 1.8vw, 13px);
         }
 
         .notes-detail::before {
@@ -262,23 +252,35 @@
             position: absolute;
             left: 0;
             color: #666;
+            font-weight: bold;
+        }
+
+        .notes-detail strong {
+            color: #333;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .notes-detail span {
+            display: block;
+            color: #666;
+            margin: 2px 0;
+            font-size: 0.9em;
+        }
+
+        .event-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin: 1px;
         }
 
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .calendar-container {
-                box-shadow: none;
-                padding: 20px;
-            }
-            .nav-buttons, .download-btn {
-                display: none;
-            }
-            .notes-section {
-                page-break-inside: avoid;
-            }
+            body { background: white; padding: 0; }
+            .calendar-container { box-shadow: none; padding: 20px; }
+            .nav-buttons, .download-btn { display: none; }
+            .notes-section { page-break-inside: avoid; max-height: none; }
         }
 
         @media (max-width: 1024px) {
@@ -286,8 +288,82 @@
                 grid-template-columns: 1fr;
             }
             .notes-section {
-                margin-top: 30px;
+                margin-top: 20px;
+                max-height: 500px;
             }
+            .calendar-container {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 5px;
+            }
+            .calendar-container {
+                padding: 15px 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .month-year {
+                width: 100%;
+            }
+            .year-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .dates-grid {
+                gap: 0;
+            }
+            .date-cell {
+                min-height: 90px;
+                padding: 6px 4px;
+            }
+            .period-info {
+                font-size: 8px;
+            }
+            .notes-section {
+                max-height: 400px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .date-cell {
+                min-height: 80px;
+                padding: 5px 3px;
+            }
+            .date-number {
+                font-size: 14px;
+            }
+            .period-info {
+                font-size: 7px;
+                line-height: 1.1;
+            }
+            .day-header {
+                padding: 10px 4px;
+                font-size: 11px;
+            }
+        }
+
+        /* Scrollbar styling for notes */
+        .notes-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .notes-section::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .notes-section::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .notes-section::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
@@ -302,8 +378,8 @@
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="nav-btn" onclick="previousMonth()">‹</button>
-                <button class="nav-btn" onclick="nextMonth()">›</button>
+                <button class="nav-btn" onclick="previousMonth()" aria-label="Previous month">‹</button>
+                <button class="nav-btn" onclick="nextMonth()" aria-label="Next month">›</button>
             </div>
         </div>
 
@@ -329,7 +405,9 @@
     </div>
 
     <script>
-        // Parse months map
+        // Comprehensive Vedic Calendar Data for 2026
+        // All dates extracted from TXT files and hardcoded
+
         const months = {
             'January': 0, 'February': 1, 'March': 2, 'April': 3,
             'May': 4, 'June': 5, 'July': 6, 'August': 7,
@@ -339,195 +417,320 @@
             'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
         };
 
-        function parseTime(timeStr, date) {
-            const match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-            if (!match) return null;
-            let [, hour, minute, ampm] = match;
-            hour = parseInt(hour);
-            minute = parseInt(minute);
+        function parseDateTime(dateStr, timeStr) {
+            const dateMatch = dateStr.match(/(\w+)\s+(\d+),\s+(\d+)/);
+            if (!dateMatch) return null;
+            const [, monthName, day, year] = dateMatch;
+            const month = months[monthName];
+            if (month === undefined) return null;
+            
+            let hour = 0, minute = 0;
+            if (timeStr) {
+                const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+                if (timeMatch) {
+                    let [, h, m, ampm] = timeMatch;
+                    hour = parseInt(h);
+                    minute = parseInt(m);
             if (ampm.toUpperCase() === 'PM' && hour !== 12) hour += 12;
             if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0;
-            return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute);
+                }
+            }
+            return new Date(year, month, parseInt(day), hour, minute);
         }
 
-        // Hardcoded Bhadra periods
+        // Bhadra Periods (from Bhadra dates 2026.txt)
         const bhadraPeriods = [
-            {name: "Bhadra", start: new Date(2026, 0, 2, 18, 53), end: new Date(2026, 0, 3, 5, 11), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 5, 20, 53), end: new Date(2026, 0, 6, 8, 1), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 9, 7, 5), end: new Date(2026, 0, 9, 19, 39), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 13, 1, 59), end: new Date(2026, 0, 13, 15, 17), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 16, 22, 21), end: new Date(2026, 0, 17, 11, 15), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 22, 14, 40), end: new Date(2026, 0, 23, 2, 28), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 25, 23, 10), end: new Date(2026, 0, 26, 10, 16), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 0, 29, 3, 16), end: new Date(2026, 0, 29, 13, 55), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 1, 5, 52), end: new Date(2026, 1, 1, 16, 42), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 4, 12, 19), end: new Date(2026, 1, 5, 0, 9), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 8, 2, 54), end: new Date(2026, 1, 8, 15, 54), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 11, 23, 12), end: new Date(2026, 1, 12, 12, 22), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 15, 17, 4), end: new Date(2026, 1, 16, 5, 23), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 21, 1, 51), end: new Date(2026, 1, 21, 13, 0), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 24, 7, 1), end: new Date(2026, 1, 24, 17, 56), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 1, 27, 11, 31), end: new Date(2026, 1, 27, 22, 32), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 2, 17, 55), end: new Date(2026, 2, 3, 5, 28), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 6, 5, 24), end: new Date(2026, 2, 6, 17, 53), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 9, 23, 27), end: new Date(2026, 2, 10, 12, 40), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 13, 19, 23), end: new Date(2026, 2, 14, 8, 10), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 17, 9, 23), end: new Date(2026, 2, 17, 20, 59), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 22, 10, 36), end: new Date(2026, 2, 22, 21, 16), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 25, 13, 50), end: new Date(2026, 2, 26, 0, 47), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 2, 28, 20, 13), end: new Date(2026, 2, 29, 7, 46), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 1, 7, 6), end: new Date(2026, 3, 1, 19, 20), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 4, 23, 1), end: new Date(2026, 3, 5, 11, 59), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 8, 19, 1), end: new Date(2026, 3, 9, 8, 12), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 12, 13, 2), end: new Date(2026, 3, 13, 1, 16), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 15, 22, 31), end: new Date(2026, 3, 16, 9, 25), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 20, 17, 49), end: new Date(2026, 3, 21, 4, 14), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 23, 20, 49), end: new Date(2026, 3, 24, 8, 1), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 27, 6, 7), end: new Date(2026, 3, 27, 18, 15), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 3, 30, 21, 12), end: new Date(2026, 4, 1, 10, 0), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 4, 16, 12), end: new Date(2026, 4, 5, 5, 24), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 8, 12, 21), end: new Date(2026, 4, 9, 1, 16), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 12, 3, 14), end: new Date(2026, 4, 12, 14, 52), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 15, 8, 31), end: new Date(2026, 4, 15, 18, 54), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 20, 0, 39), end: new Date(2026, 4, 20, 11, 6), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 23, 5, 4), end: new Date(2026, 4, 23, 16, 40), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 26, 17, 42), end: new Date(2026, 4, 27, 6, 21), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 4, 30, 11, 57), end: new Date(2026, 4, 31, 1, 5), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 3, 8, 12), end: new Date(2026, 5, 3, 21, 21), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 7, 2, 40), end: new Date(2026, 5, 7, 15, 7), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 10, 13, 52), end: new Date(2026, 5, 11, 0, 57), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 13, 16, 7), end: new Date(2026, 5, 14, 2, 15), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 18, 8, 13), end: new Date(2026, 5, 18, 18, 58), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 21, 15, 20), end: new Date(2026, 5, 22, 3, 24), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 25, 7, 8), end: new Date(2026, 5, 25, 20, 9), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 5, 29, 3, 6), end: new Date(2026, 5, 29, 16, 16), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 2, 22, 31), end: new Date(2026, 6, 3, 11, 20), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 6, 13, 47), end: new Date(2026, 6, 7, 1, 41), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 9, 21, 31), end: new Date(2026, 6, 10, 8, 16), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 12, 22, 29), end: new Date(2026, 6, 13, 8, 39), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 17, 17, 29), end: new Date(2026, 6, 18, 4, 42), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 21, 4, 2), end: new Date(2026, 6, 21, 16, 34), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 24, 22, 22), end: new Date(2026, 6, 25, 11, 34), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 6, 28, 18, 18), end: new Date(2026, 6, 29, 7, 14), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 1, 10, 52), end: new Date(2026, 7, 1, 23, 7), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 4, 22, 3), end: new Date(2026, 7, 5, 9, 26), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 8, 3, 20), end: new Date(2026, 7, 8, 13, 59), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 11, 4, 54), end: new Date(2026, 7, 11, 15, 22), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 16, 5, 5), end: new Date(2026, 7, 16, 16, 52), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 19, 19, 19), end: new Date(2026, 7, 20, 8, 15), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 23, 15, 10), end: new Date(2026, 7, 24, 4, 18), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 27, 9, 8), end: new Date(2026, 7, 27, 21, 32), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 7, 30, 21, 17), end: new Date(2026, 7, 31, 8, 50), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 3, 4, 25), end: new Date(2026, 8, 3, 15, 27), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 6, 8, 41), end: new Date(2026, 8, 6, 19, 29), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 9, 12, 30), end: new Date(2026, 8, 9, 23, 29), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 14, 19, 20), end: new Date(2026, 8, 15, 7, 44), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 18, 13, 0), end: new Date(2026, 8, 19, 2, 13), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 22, 8, 55), end: new Date(2026, 8, 22, 21, 43), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 25, 23, 6), end: new Date(2026, 8, 26, 10, 46), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 8, 29, 6, 13), end: new Date(2026, 8, 29, 17, 9), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 2, 10, 15), end: new Date(2026, 9, 2, 21, 6), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 5, 14, 58), end: new Date(2026, 9, 6, 2, 7), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 8, 22, 15), end: new Date(2026, 9, 9, 9, 52), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 14, 12, 16), end: new Date(2026, 9, 15, 1, 13), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 18, 8, 27), end: new Date(2026, 9, 18, 21, 42), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 22, 2, 35), end: new Date(2026, 9, 22, 14, 47), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 25, 11, 55), end: new Date(2026, 9, 25, 22, 52), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 28, 14, 36), end: new Date(2026, 9, 29, 1, 6), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 9, 31, 16, 57), end: new Date(2026, 10, 1, 3, 51), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 3, 23, 25), end: new Date(2026, 10, 4, 11, 3), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 7, 10, 47), end: new Date(2026, 10, 7, 23, 4), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 13, 7, 24), end: new Date(2026, 10, 13, 20, 42), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 17, 4, 19), end: new Date(2026, 10, 17, 17, 17), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 20, 19, 0), end: new Date(2026, 10, 21, 6, 31), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 23, 23, 42), end: new Date(2026, 10, 24, 10, 5), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 26, 23, 30), end: new Date(2026, 10, 27, 9, 48), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 10, 30, 1, 46), end: new Date(2026, 10, 30, 12, 54), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 3, 10, 53), end: new Date(2026, 11, 3, 23, 3), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 7, 2, 22), end: new Date(2026, 11, 7, 15, 14), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 13, 3, 27), end: new Date(2026, 11, 13, 16, 47), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 16, 22, 45), end: new Date(2026, 11, 17, 11, 12), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 20, 9, 17), end: new Date(2026, 11, 20, 20, 14), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 23, 10, 47), end: new Date(2026, 11, 23, 20, 53), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 26, 9, 42), end: new Date(2026, 11, 26, 20, 4), type: "bhadra"},
-            {name: "Bhadra", start: new Date(2026, 11, 29, 13, 24), end: new Date(2026, 11, 30, 0, 54), type: "bhadra"}
+            {name: "Bhadra", start: new Date(2026, 0, 2, 18, 53), end: new Date(2026, 0, 3, 5, 11), type: "bhadra", details: "Bhadra begins at 06:53 PM, ends at 05:11 AM"},
+            {name: "Bhadra", start: new Date(2026, 0, 5, 20, 53), end: new Date(2026, 0, 6, 8, 1), type: "bhadra", details: "Bhadra begins at 08:53 PM, ends at 08:01 AM"},
+            {name: "Bhadra", start: new Date(2026, 0, 9, 7, 5), end: new Date(2026, 0, 9, 19, 39), type: "bhadra", details: "Bhadra begins at 07:05 AM, ends at 07:39 PM"},
+            {name: "Bhadra", start: new Date(2026, 0, 13, 1, 59), end: new Date(2026, 0, 13, 15, 17), type: "bhadra", details: "Bhadra begins at 01:59 AM, ends at 03:17 PM"},
+            {name: "Bhadra", start: new Date(2026, 0, 16, 22, 21), end: new Date(2026, 0, 17, 11, 15), type: "bhadra", details: "Bhadra begins at 10:21 PM, ends at 11:15 AM"},
+            {name: "Bhadra", start: new Date(2026, 0, 22, 14, 40), end: new Date(2026, 0, 23, 2, 28), type: "bhadra", details: "Bhadra begins at 02:40 PM, ends at 02:28 AM"},
+            {name: "Bhadra", start: new Date(2026, 0, 25, 23, 10), end: new Date(2026, 0, 26, 10, 16), type: "bhadra", details: "Bhadra begins at 11:10 PM, ends at 10:16 AM"},
+            {name: "Bhadra", start: new Date(2026, 0, 29, 3, 16), end: new Date(2026, 0, 29, 13, 55), type: "bhadra", details: "Bhadra begins at 03:16 AM, ends at 01:55 PM"},
+            {name: "Bhadra", start: new Date(2026, 1, 1, 5, 52), end: new Date(2026, 1, 1, 16, 42), type: "bhadra", details: "Bhadra begins at 05:52 AM, ends at 04:42 PM"},
+            {name: "Bhadra", start: new Date(2026, 1, 4, 12, 19), end: new Date(2026, 1, 5, 0, 9), type: "bhadra", details: "Bhadra begins at 12:19 PM, ends at 12:09 AM"},
+            {name: "Bhadra", start: new Date(2026, 1, 8, 2, 54), end: new Date(2026, 1, 8, 15, 54), type: "bhadra", details: "Bhadra begins at 02:54 AM, ends at 03:54 PM"},
+            {name: "Bhadra", start: new Date(2026, 1, 11, 23, 12), end: new Date(2026, 1, 12, 12, 22), type: "bhadra", details: "Bhadra begins at 11:12 PM, ends at 12:22 PM"},
+            {name: "Bhadra", start: new Date(2026, 1, 15, 17, 4), end: new Date(2026, 1, 16, 5, 23), type: "bhadra", details: "Bhadra begins at 05:04 PM, ends at 05:23 AM"},
+            {name: "Bhadra", start: new Date(2026, 1, 21, 1, 51), end: new Date(2026, 1, 21, 13, 0), type: "bhadra", details: "Bhadra begins at 01:51 AM, ends at 01:00 PM"},
+            {name: "Bhadra", start: new Date(2026, 1, 24, 7, 1), end: new Date(2026, 1, 24, 17, 56), type: "bhadra", details: "Bhadra begins at 07:01 AM, ends at 05:56 PM"},
+            {name: "Bhadra", start: new Date(2026, 1, 27, 11, 31), end: new Date(2026, 1, 27, 22, 32), type: "bhadra", details: "Bhadra begins at 11:31 AM, ends at 10:32 PM"},
+            {name: "Bhadra", start: new Date(2026, 2, 2, 17, 55), end: new Date(2026, 2, 3, 5, 28), type: "bhadra", details: "Bhadra begins at 05:55 PM, ends at 05:28 AM"},
+            {name: "Bhadra", start: new Date(2026, 2, 6, 5, 24), end: new Date(2026, 2, 6, 17, 53), type: "bhadra", details: "Bhadra begins at 05:24 AM, ends at 05:53 PM"},
+            {name: "Bhadra", start: new Date(2026, 2, 9, 23, 27), end: new Date(2026, 2, 10, 12, 40), type: "bhadra", details: "Bhadra begins at 11:27 PM, ends at 12:40 PM"},
+            {name: "Bhadra", start: new Date(2026, 2, 13, 19, 23), end: new Date(2026, 2, 14, 8, 10), type: "bhadra", details: "Bhadra begins at 07:23 PM, ends at 08:10 AM"},
+            {name: "Bhadra", start: new Date(2026, 2, 17, 9, 23), end: new Date(2026, 2, 17, 20, 59), type: "bhadra", details: "Bhadra begins at 09:23 AM, ends at 08:59 PM"},
+            {name: "Bhadra", start: new Date(2026, 2, 22, 10, 36), end: new Date(2026, 2, 22, 21, 16), type: "bhadra", details: "Bhadra begins at 10:36 AM, ends at 09:16 PM"},
+            {name: "Bhadra", start: new Date(2026, 2, 25, 13, 50), end: new Date(2026, 2, 26, 0, 47), type: "bhadra", details: "Bhadra begins at 01:50 PM, ends at 12:47 AM"},
+            {name: "Bhadra", start: new Date(2026, 2, 28, 20, 13), end: new Date(2026, 2, 29, 7, 46), type: "bhadra", details: "Bhadra begins at 08:13 PM, ends at 07:46 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 1, 7, 6), end: new Date(2026, 3, 1, 19, 20), type: "bhadra", details: "Bhadra begins at 07:06 AM, ends at 07:20 PM"},
+            {name: "Bhadra", start: new Date(2026, 3, 4, 23, 1), end: new Date(2026, 3, 5, 11, 59), type: "bhadra", details: "Bhadra begins at 11:01 PM, ends at 11:59 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 8, 19, 1), end: new Date(2026, 3, 9, 8, 12), type: "bhadra", details: "Bhadra begins at 07:01 PM, ends at 08:12 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 12, 13, 2), end: new Date(2026, 3, 13, 1, 16), type: "bhadra", details: "Bhadra begins at 01:02 PM, ends at 01:16 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 15, 22, 31), end: new Date(2026, 3, 16, 9, 25), type: "bhadra", details: "Bhadra begins at 10:31 PM, ends at 09:25 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 20, 17, 49), end: new Date(2026, 3, 21, 4, 14), type: "bhadra", details: "Bhadra begins at 05:49 PM, ends at 04:14 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 23, 20, 49), end: new Date(2026, 3, 24, 8, 1), type: "bhadra", details: "Bhadra begins at 08:49 PM, ends at 08:01 AM"},
+            {name: "Bhadra", start: new Date(2026, 3, 27, 6, 7), end: new Date(2026, 3, 27, 18, 15), type: "bhadra", details: "Bhadra begins at 06:07 AM, ends at 06:15 PM"},
+            {name: "Bhadra", start: new Date(2026, 3, 30, 21, 12), end: new Date(2026, 4, 1, 10, 0), type: "bhadra", details: "Bhadra begins at 09:12 PM, ends at 10:00 AM"},
+            {name: "Bhadra", start: new Date(2026, 4, 4, 16, 12), end: new Date(2026, 4, 5, 5, 24), type: "bhadra", details: "Bhadra begins at 04:12 PM, ends at 05:24 AM"},
+            {name: "Bhadra", start: new Date(2026, 4, 8, 12, 21), end: new Date(2026, 4, 9, 1, 16), type: "bhadra", details: "Bhadra begins at 12:21 PM, ends at 01:16 AM"},
+            {name: "Bhadra", start: new Date(2026, 4, 12, 3, 14), end: new Date(2026, 4, 12, 14, 52), type: "bhadra", details: "Bhadra begins at 03:14 AM, ends at 02:52 PM"},
+            {name: "Bhadra", start: new Date(2026, 4, 15, 8, 31), end: new Date(2026, 4, 15, 18, 54), type: "bhadra", details: "Bhadra begins at 08:31 AM, ends at 06:54 PM"},
+            {name: "Bhadra", start: new Date(2026, 4, 20, 0, 39), end: new Date(2026, 4, 20, 11, 6), type: "bhadra", details: "Bhadra begins at 12:39 AM, ends at 11:06 AM"},
+            {name: "Bhadra", start: new Date(2026, 4, 23, 5, 4), end: new Date(2026, 4, 23, 16, 40), type: "bhadra", details: "Bhadra begins at 05:04 AM, ends at 04:40 PM"},
+            {name: "Bhadra", start: new Date(2026, 4, 26, 17, 42), end: new Date(2026, 4, 27, 6, 21), type: "bhadra", details: "Bhadra begins at 05:42 PM, ends at 06:21 AM"},
+            {name: "Bhadra", start: new Date(2026, 4, 30, 11, 57), end: new Date(2026, 4, 31, 1, 5), type: "bhadra", details: "Bhadra begins at 11:57 AM, ends at 01:05 AM"},
+            {name: "Bhadra", start: new Date(2026, 5, 3, 8, 12), end: new Date(2026, 5, 3, 21, 21), type: "bhadra", details: "Bhadra begins at 08:12 AM, ends at 09:21 PM"},
+            {name: "Bhadra", start: new Date(2026, 5, 7, 2, 40), end: new Date(2026, 5, 7, 15, 7), type: "bhadra", details: "Bhadra begins at 02:40 AM, ends at 03:07 PM"},
+            {name: "Bhadra", start: new Date(2026, 5, 10, 13, 52), end: new Date(2026, 5, 11, 0, 57), type: "bhadra", details: "Bhadra begins at 01:52 PM, ends at 12:57 AM"},
+            {name: "Bhadra", start: new Date(2026, 5, 13, 16, 7), end: new Date(2026, 5, 14, 2, 15), type: "bhadra", details: "Bhadra begins at 04:07 PM, ends at 02:15 AM"},
+            {name: "Bhadra", start: new Date(2026, 5, 18, 8, 13), end: new Date(2026, 5, 18, 18, 58), type: "bhadra", details: "Bhadra begins at 08:13 AM, ends at 06:58 PM"},
+            {name: "Bhadra", start: new Date(2026, 5, 21, 15, 20), end: new Date(2026, 5, 22, 3, 24), type: "bhadra", details: "Bhadra begins at 03:20 PM, ends at 03:24 AM"},
+            {name: "Bhadra", start: new Date(2026, 5, 25, 7, 8), end: new Date(2026, 5, 25, 20, 9), type: "bhadra", details: "Bhadra begins at 07:08 AM, ends at 08:09 PM"},
+            {name: "Bhadra", start: new Date(2026, 5, 29, 3, 6), end: new Date(2026, 5, 29, 16, 16), type: "bhadra", details: "Bhadra begins at 03:06 AM, ends at 04:16 PM"},
+            {name: "Bhadra", start: new Date(2026, 6, 2, 22, 31), end: new Date(2026, 6, 3, 11, 20), type: "bhadra", details: "Bhadra begins at 10:31 PM, ends at 11:20 AM"},
+            {name: "Bhadra", start: new Date(2026, 6, 6, 13, 47), end: new Date(2026, 6, 7, 1, 41), type: "bhadra", details: "Bhadra begins at 01:47 PM, ends at 01:41 AM"},
+            {name: "Bhadra", start: new Date(2026, 6, 9, 21, 31), end: new Date(2026, 6, 10, 8, 16), type: "bhadra", details: "Bhadra begins at 09:31 PM, ends at 08:16 AM"},
+            {name: "Bhadra", start: new Date(2026, 6, 12, 22, 29), end: new Date(2026, 6, 13, 8, 39), type: "bhadra", details: "Bhadra begins at 10:29 PM, ends at 08:39 AM"},
+            {name: "Bhadra", start: new Date(2026, 6, 17, 17, 29), end: new Date(2026, 6, 18, 4, 42), type: "bhadra", details: "Bhadra begins at 05:29 PM, ends at 04:42 AM"},
+            {name: "Bhadra", start: new Date(2026, 6, 21, 4, 2), end: new Date(2026, 6, 21, 16, 34), type: "bhadra", details: "Bhadra begins at 04:02 AM, ends at 04:34 PM"},
+            {name: "Bhadra", start: new Date(2026, 6, 24, 22, 22), end: new Date(2026, 6, 25, 11, 34), type: "bhadra", details: "Bhadra begins at 10:22 PM, ends at 11:34 AM"},
+            {name: "Bhadra", start: new Date(2026, 6, 28, 18, 18), end: new Date(2026, 6, 29, 7, 14), type: "bhadra", details: "Bhadra begins at 06:18 PM, ends at 07:14 AM"},
+            {name: "Bhadra", start: new Date(2026, 7, 1, 10, 52), end: new Date(2026, 7, 1, 23, 7), type: "bhadra", details: "Bhadra begins at 10:52 AM, ends at 11:07 PM"},
+            {name: "Bhadra", start: new Date(2026, 7, 4, 22, 3), end: new Date(2026, 7, 5, 9, 26), type: "bhadra", details: "Bhadra begins at 10:03 PM, ends at 09:26 AM"},
+            {name: "Bhadra", start: new Date(2026, 7, 8, 3, 20), end: new Date(2026, 7, 8, 13, 59), type: "bhadra", details: "Bhadra begins at 03:20 AM, ends at 01:59 PM"},
+            {name: "Bhadra", start: new Date(2026, 7, 11, 4, 54), end: new Date(2026, 7, 11, 15, 22), type: "bhadra", details: "Bhadra begins at 04:54 AM, ends at 03:22 PM"},
+            {name: "Bhadra", start: new Date(2026, 7, 16, 5, 5), end: new Date(2026, 7, 16, 16, 52), type: "bhadra", details: "Bhadra begins at 05:05 AM, ends at 04:52 PM"},
+            {name: "Bhadra", start: new Date(2026, 7, 19, 19, 19), end: new Date(2026, 7, 20, 8, 15), type: "bhadra", details: "Bhadra begins at 07:19 PM, ends at 08:15 AM"},
+            {name: "Bhadra", start: new Date(2026, 7, 23, 15, 10), end: new Date(2026, 7, 24, 4, 18), type: "bhadra", details: "Bhadra begins at 03:10 PM, ends at 04:18 AM"},
+            {name: "Bhadra", start: new Date(2026, 7, 27, 9, 8), end: new Date(2026, 7, 27, 21, 32), type: "bhadra", details: "Bhadra begins at 09:08 AM, ends at 09:32 PM"},
+            {name: "Bhadra", start: new Date(2026, 7, 30, 21, 17), end: new Date(2026, 7, 31, 8, 50), type: "bhadra", details: "Bhadra begins at 09:17 PM, ends at 08:50 AM"},
+            {name: "Bhadra", start: new Date(2026, 8, 3, 4, 25), end: new Date(2026, 8, 3, 15, 27), type: "bhadra", details: "Bhadra begins at 04:25 AM, ends at 03:27 PM"},
+            {name: "Bhadra", start: new Date(2026, 8, 6, 8, 41), end: new Date(2026, 8, 6, 19, 29), type: "bhadra", details: "Bhadra begins at 08:41 AM, ends at 07:29 PM"},
+            {name: "Bhadra", start: new Date(2026, 8, 9, 12, 30), end: new Date(2026, 8, 9, 23, 29), type: "bhadra", details: "Bhadra begins at 12:30 PM, ends at 11:29 PM"},
+            {name: "Bhadra", start: new Date(2026, 8, 14, 19, 20), end: new Date(2026, 8, 15, 7, 44), type: "bhadra", details: "Bhadra begins at 07:20 PM, ends at 07:44 AM"},
+            {name: "Bhadra", start: new Date(2026, 8, 18, 13, 0), end: new Date(2026, 8, 19, 2, 13), type: "bhadra", details: "Bhadra begins at 01:00 PM, ends at 02:13 AM"},
+            {name: "Bhadra", start: new Date(2026, 8, 22, 8, 55), end: new Date(2026, 8, 22, 21, 43), type: "bhadra", details: "Bhadra begins at 08:55 AM, ends at 09:43 PM"},
+            {name: "Bhadra", start: new Date(2026, 8, 25, 23, 6), end: new Date(2026, 8, 26, 10, 46), type: "bhadra", details: "Bhadra begins at 11:06 PM, ends at 10:46 AM"},
+            {name: "Bhadra", start: new Date(2026, 8, 29, 6, 13), end: new Date(2026, 8, 29, 17, 9), type: "bhadra", details: "Bhadra begins at 06:13 AM, ends at 05:09 PM"},
+            {name: "Bhadra", start: new Date(2026, 9, 2, 10, 15), end: new Date(2026, 9, 2, 21, 6), type: "bhadra", details: "Bhadra begins at 10:15 AM, ends at 09:06 PM"},
+            {name: "Bhadra", start: new Date(2026, 9, 5, 14, 58), end: new Date(2026, 9, 6, 2, 7), type: "bhadra", details: "Bhadra begins at 02:58 PM, ends at 02:07 AM"},
+            {name: "Bhadra", start: new Date(2026, 9, 8, 22, 15), end: new Date(2026, 9, 9, 9, 52), type: "bhadra", details: "Bhadra begins at 10:15 PM, ends at 09:52 AM"},
+            {name: "Bhadra", start: new Date(2026, 9, 14, 12, 16), end: new Date(2026, 9, 15, 1, 13), type: "bhadra", details: "Bhadra begins at 12:16 PM, ends at 01:13 AM"},
+            {name: "Bhadra", start: new Date(2026, 9, 18, 8, 27), end: new Date(2026, 9, 18, 21, 42), type: "bhadra", details: "Bhadra begins at 08:27 AM, ends at 09:42 PM"},
+            {name: "Bhadra", start: new Date(2026, 9, 22, 2, 35), end: new Date(2026, 9, 22, 14, 47), type: "bhadra", details: "Bhadra begins at 02:35 AM, ends at 02:47 PM"},
+            {name: "Bhadra", start: new Date(2026, 9, 25, 11, 55), end: new Date(2026, 9, 25, 22, 52), type: "bhadra", details: "Bhadra begins at 11:55 AM, ends at 10:52 PM"},
+            {name: "Bhadra", start: new Date(2026, 9, 28, 14, 36), end: new Date(2026, 9, 29, 1, 6), type: "bhadra", details: "Bhadra begins at 02:36 PM, ends at 01:06 AM"},
+            {name: "Bhadra", start: new Date(2026, 9, 31, 16, 57), end: new Date(2026, 10, 1, 3, 51), type: "bhadra", details: "Bhadra begins at 04:57 PM, ends at 03:51 AM"},
+            {name: "Bhadra", start: new Date(2026, 10, 3, 23, 25), end: new Date(2026, 10, 4, 11, 3), type: "bhadra", details: "Bhadra begins at 11:25 PM, ends at 11:03 AM"},
+            {name: "Bhadra", start: new Date(2026, 10, 7, 10, 47), end: new Date(2026, 10, 7, 23, 4), type: "bhadra", details: "Bhadra begins at 10:47 AM, ends at 11:04 PM"},
+            {name: "Bhadra", start: new Date(2026, 10, 13, 7, 24), end: new Date(2026, 10, 13, 20, 42), type: "bhadra", details: "Bhadra begins at 07:24 AM, ends at 08:42 PM"},
+            {name: "Bhadra", start: new Date(2026, 10, 17, 4, 19), end: new Date(2026, 10, 17, 17, 17), type: "bhadra", details: "Bhadra begins at 04:19 AM, ends at 05:17 PM"},
+            {name: "Bhadra", start: new Date(2026, 10, 20, 19, 0), end: new Date(2026, 10, 21, 6, 31), type: "bhadra", details: "Bhadra begins at 07:00 PM, ends at 06:31 AM"},
+            {name: "Bhadra", start: new Date(2026, 10, 23, 23, 42), end: new Date(2026, 10, 24, 10, 5), type: "bhadra", details: "Bhadra begins at 11:42 PM, ends at 10:05 AM"},
+            {name: "Bhadra", start: new Date(2026, 10, 26, 23, 30), end: new Date(2026, 10, 27, 9, 48), type: "bhadra", details: "Bhadra begins at 11:30 PM, ends at 09:48 AM"},
+            {name: "Bhadra", start: new Date(2026, 10, 30, 1, 46), end: new Date(2026, 10, 30, 12, 54), type: "bhadra", details: "Bhadra begins at 01:46 AM, ends at 12:54 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 3, 10, 53), end: new Date(2026, 11, 3, 23, 3), type: "bhadra", details: "Bhadra begins at 10:53 AM, ends at 11:03 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 7, 2, 22), end: new Date(2026, 11, 7, 15, 14), type: "bhadra", details: "Bhadra begins at 02:22 AM, ends at 03:14 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 13, 3, 27), end: new Date(2026, 11, 13, 16, 47), type: "bhadra", details: "Bhadra begins at 03:27 AM, ends at 04:47 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 16, 22, 45), end: new Date(2026, 11, 17, 11, 12), type: "bhadra", details: "Bhadra begins at 10:45 PM, ends at 11:12 AM"},
+            {name: "Bhadra", start: new Date(2026, 11, 20, 9, 17), end: new Date(2026, 11, 20, 20, 14), type: "bhadra", details: "Bhadra begins at 09:17 AM, ends at 08:14 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 23, 10, 47), end: new Date(2026, 11, 23, 20, 53), type: "bhadra", details: "Bhadra begins at 10:47 AM, ends at 08:53 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 26, 9, 42), end: new Date(2026, 11, 26, 20, 4), type: "bhadra", details: "Bhadra begins at 09:42 AM, ends at 08:04 PM"},
+            {name: "Bhadra", start: new Date(2026, 11, 29, 13, 24), end: new Date(2026, 11, 30, 0, 54), type: "bhadra", details: "Bhadra begins at 01:24 PM, ends at 12:54 AM"}
         ];
 
-        // Parse Amavasya dates
-        const amavasyaEvents = [
-            {date: new Date(2026, 0, 18), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 1, 17), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 2, 18), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 2, 19), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 3, 17), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 4, 16), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 5, 14), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 5, 15), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 6, 14), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 7, 12), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 8, 10), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 8, 11), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 9, 10), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 10, 8), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 10, 9), name: "Amavasya", type: "amavasya"},
-            {date: new Date(2026, 11, 8), name: "Amavasya", type: "amavasya"}
-        ];
-
-        // Parse Purnima dates
+        // Purnima Events (from 2026 Purnima Dates.txt)
         const purnimaEvents = [
-            {date: new Date(2026, 0, 3), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 1, 1), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 2, 3), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 3, 1), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 3, 2), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 4, 1), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 4, 30), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 4, 31), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 5, 29), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 6, 29), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 7, 27), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 7, 28), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 8, 26), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 9, 25), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 9, 26), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 10, 24), name: "Purnima", type: "purnima"},
-            {date: new Date(2026, 11, 23), name: "Purnima", type: "purnima"}
+            {date: new Date(2026, 0, 3), name: "Pausha Purnima", type: "purnima", details: "Pausha Purnima Vrat - Begins: 06:53 PM Jan 02, Ends: 03:32 PM Jan 03"},
+            {date: new Date(2026, 1, 1), name: "Magha Purnima", type: "purnima", details: "Magha Purnima Vrat - Begins: 05:52 AM Feb 01, Ends: 03:38 AM Feb 02"},
+            {date: new Date(2026, 2, 3), name: "Phalguna Purnima", type: "purnima", details: "Phalguna Purnima Vrat - Begins: 05:55 PM Mar 02, Ends: 05:07 PM Mar 03"},
+            {date: new Date(2026, 3, 1), name: "Chaitra Purnima", type: "purnima", details: "Chaitra Purnima Vrat - Begins: 07:06 AM Apr 01, Ends: 07:41 AM Apr 02"},
+            {date: new Date(2026, 3, 2), name: "Chaitra Purnima", type: "purnima", details: "Chaitra Purnima - Begins: 07:06 AM Apr 01, Ends: 07:41 AM Apr 02"},
+            {date: new Date(2026, 4, 1), name: "Vaishakha Purnima", type: "purnima", details: "Vaishakha Purnima Vrat (Buddha Purnima) - Begins: 09:12 PM Apr 30, Ends: 10:52 PM May 01"},
+            {date: new Date(2026, 4, 30), name: "Adhika Purnima", type: "purnima", details: "Adhika Purnima Vrat - Begins: 11:57 AM May 30, Ends: 02:14 PM May 31"},
+            {date: new Date(2026, 4, 31), name: "Jyeshtha Adhika Purnima", type: "purnima", details: "Jyeshtha Adhika Purnima - Begins: 11:57 AM May 30, Ends: 02:14 PM May 31"},
+            {date: new Date(2026, 5, 29), name: "Jyeshtha Purnima", type: "purnima", details: "Jyeshtha Purnima Vrat - Begins: 03:06 AM Jun 29, Ends: 05:26 AM Jun 30"},
+            {date: new Date(2026, 6, 29), name: "Ashadha Purnima", type: "purnima", details: "Ashadha Purnima Vrat (Guru Purnima) - Begins: 06:18 PM Jul 28, Ends: 08:05 PM Jul 29"},
+            {date: new Date(2026, 7, 27), name: "Shravana Purnima", type: "purnima", details: "Shravana Purnima Vrat - Begins: 09:08 AM Aug 27, Ends: 09:48 AM Aug 28"},
+            {date: new Date(2026, 7, 28), name: "Shravana Purnima", type: "purnima", details: "Shravana Purnima - Begins: 09:08 AM Aug 27, Ends: 09:48 AM Aug 28"},
+            {date: new Date(2026, 8, 26), name: "Bhadrapada Purnima", type: "purnima", details: "Bhadrapada Purnima Vrat - Begins: 11:06 PM Sep 25, Ends: 10:18 PM Sep 26"},
+            {date: new Date(2026, 9, 25), name: "Ashwina Purnima", type: "purnima", details: "Ashwina Purnima Vrat - Begins: 11:55 AM Oct 25, Ends: 09:41 AM Oct 26"},
+            {date: new Date(2026, 9, 26), name: "Ashwina Purnima", type: "purnima", details: "Ashwina Purnima - Begins: 11:55 AM Oct 25, Ends: 09:41 AM Oct 26"},
+            {date: new Date(2026, 10, 24), name: "Kartika Purnima", type: "purnima", details: "Kartika Purnima Vrat - Begins: 11:42 PM Nov 23, Ends: 08:23 PM Nov 24"},
+            {date: new Date(2026, 11, 23), name: "Margashirsha Purnima", type: "purnima", details: "Margashirsha Purnima Vrat - Begins: 10:47 AM Dec 23, Ends: 06:57 AM Dec 24"}
         ];
 
-        // Parse Dwipushkar Yoga dates
-        const dwipushkarYogaEvents = [
-            {date: new Date(2026, 0, 20), name: "Dwipushkar Yoga", type: "yoga"},
-            {date: new Date(2026, 2, 16), name: "Dwipushkar Yoga", type: "yoga"},
-            {date: new Date(2026, 2, 24), name: "Dwipushkar Yoga", type: "yoga"},
-            {date: new Date(2026, 5, 7), name: "Dwipushkar Yoga", type: "yoga"},
-            {date: new Date(2026, 7, 9), name: "Dwipushkar Yoga", type: "yoga"},
-            {date: new Date(2026, 9, 11), name: "Dwipushkar Yoga", type: "yoga"},
-            {date: new Date(2026, 11, 5), name: "Dwipushkar Yoga", type: "yoga"}
+        // Amavasya Events (from 2026 Amavasya Dates.txt)
+        const amavasyaEvents = [
+            {date: new Date(2026, 0, 18), name: "Magha Amavasya", type: "amavasya", details: "Magha Amavasya (Darsha Amavasya) - Begins: 12:03 AM Jan 18, Ends: 01:21 AM Jan 19"},
+            {date: new Date(2026, 1, 17), name: "Phalguna Amavasya", type: "amavasya", details: "Phalguna Amavasya (Darsha Amavasya) - Begins: 05:34 PM Feb 16, Ends: 05:30 PM Feb 17"},
+            {date: new Date(2026, 2, 18), name: "Chaitra Amavasya", type: "amavasya", details: "Chaitra Amavasya (Darsha Amavasya) - Begins: 08:25 AM Mar 18, Ends: 06:52 AM Mar 19"},
+            {date: new Date(2026, 2, 19), name: "Chaitra Amavasya", type: "amavasya", details: "Chaitra Amavasya - Begins: 08:25 AM Mar 18, Ends: 06:52 AM Mar 19"},
+            {date: new Date(2026, 3, 17), name: "Vaishakha Amavasya", type: "amavasya", details: "Vaishakha Amavasya (Darsha Amavasya) - Begins: 08:11 PM Apr 16, Ends: 05:21 PM Apr 17"},
+            {date: new Date(2026, 4, 16), name: "Jyeshtha Amavasya", type: "amavasya", details: "Jyeshtha Amavasya (Darsha Amavasya) - Begins: 05:11 AM May 16, Ends: 01:30 AM May 17"},
+            {date: new Date(2026, 5, 14), name: "Adhika Darsha Amavasya", type: "amavasya", details: "Adhika Darsha Amavasya - Begins: 12:19 PM Jun 14, Ends: 08:23 AM Jun 15"},
+            {date: new Date(2026, 5, 15), name: "Jyeshtha Adhika Amavasya", type: "amavasya", details: "Jyeshtha Adhika Amavasya - Begins: 12:19 PM Jun 14, Ends: 08:23 AM Jun 15"},
+            {date: new Date(2026, 6, 14), name: "Ashadha Amavasya", type: "amavasya", details: "Ashadha Amavasya (Darsha Amavasya) - Begins: 06:49 PM Jul 13, Ends: 03:12 PM Jul 14"},
+            {date: new Date(2026, 7, 12), name: "Shravana Amavasya", type: "amavasya", details: "Shravana Amavasya (Darsha Amavasya) - Begins: 01:52 AM Aug 12, Ends: 11:06 PM Aug 12"},
+            {date: new Date(2026, 8, 10), name: "Bhadrapada Amavasya", type: "amavasya", details: "Bhadrapada Amavasya (Darsha Amavasya) - Begins: 10:33 AM Sep 10, Ends: 08:56 AM Sep 11"},
+            {date: new Date(2026, 8, 11), name: "Bhadrapada Amavasya", type: "amavasya", details: "Bhadrapada Amavasya - Begins: 10:33 AM Sep 10, Ends: 08:56 AM Sep 11"},
+            {date: new Date(2026, 9, 10), name: "Ashwina Amavasya", type: "amavasya", details: "Ashwina Amavasya (Darsha Amavasya) - Begins: 09:35 PM Oct 09, Ends: 09:19 PM Oct 10"},
+            {date: new Date(2026, 10, 8), name: "Kartika Amavasya", type: "amavasya", details: "Kartika Amavasya (Darsha Amavasya) - Begins: 11:27 AM Nov 08, Ends: 12:31 PM Nov 09"},
+            {date: new Date(2026, 10, 9), name: "Kartika Amavasya", type: "amavasya", details: "Kartika Amavasya - Begins: 11:27 AM Nov 08, Ends: 12:31 PM Nov 09"},
+            {date: new Date(2026, 11, 8), name: "Margashirsha Amavasya", type: "amavasya", details: "Margashirsha Amavasya (Darsha Amavasya) - Begins: 04:12 AM Dec 08, Ends: 06:21 AM Dec 09"}
         ];
 
-        // Parse Indra Yoga dates
-        const indraYogaEvents = [
-            {date: new Date(2026, 0, 3), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 0, 28), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 1, 23), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 2, 20), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 3, 15), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 4, 11), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 5, 5), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 5, 30), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 6, 25), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 7, 20), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 8, 14), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 9, 9), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 10, 4), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 10, 29), name: "Indra Yoga", type: "yoga"},
-            {date: new Date(2026, 11, 25), name: "Indra Yoga", type: "yoga"}
+        // Festival Events
+        const festivalEvents = [
+            {date: new Date(2026, 2, 2), name: "Holika Dahan", type: "festival", details: "Holika Dahan - Monday, March 2, 2026"},
+            {date: new Date(2026, 2, 3), name: "Holi", type: "festival", details: "Holi - Tuesday, March 3, 2026"},
+            {date: new Date(2026, 2, 19), name: "Gudi Padwa", type: "festival", details: "Gudi Padwa - Thursday, March 19, 2026"},
+            {date: new Date(2026, 2, 26), name: "Ram Navami", type: "festival", details: "Ram Navami - Thursday, March 26, 2026"},
+            {date: new Date(2026, 1, 15), name: "Maha Shivratri", type: "festival", details: "Maha Shivratri - Sunday, February 15, 2026"},
+            {date: new Date(2026, 4, 1), name: "Buddha Purnima", type: "festival", details: "Buddha Purnima - 2588th birth anniversary - Full moon date starts: April 30, 2026 at 09:12 PM, ends: May 01, 2026 at 10:52 PM"},
+            {date: new Date(2026, 6, 29), name: "Guru Purnima", type: "festival", details: "Guru Purnima - Wednesday, July 29, 2026 - Purnima Tithi Begins: 06:18 PM on Jul 28, Ends: 08:05 PM on Jul 29"},
+            {date: new Date(2026, 8, 4), name: "Krishna Janmashtami", type: "festival", details: "Krishna Janmashtami - 4th September 2026 Friday"},
+            {date: new Date(2026, 8, 14), name: "Ganesh Chaturthi", type: "festival", details: "Ganesh Chaturthi - Monday, September 14, 2026"}
+        ];
+
+        // Planet Transit Events
+        const transitEvents = [
+            {date: new Date(2026, 5, 2), name: "Jupiter Transit", type: "transit", details: "Jupiter enters Cancer (Karka) - June 2, 2026, Tuesday at 02:25 AM"},
+            {date: new Date(2026, 9, 31), name: "Jupiter Transit", type: "transit", details: "Jupiter enters Leo (Simha) - October 31, 2026, Saturday at 12:50 PM"},
+            {date: new Date(2026, 0, 16), name: "Mars Transit", type: "transit", details: "Mars enters Capricorn (Makara) - January 16, 2026, Friday at 04:36 AM"},
+            {date: new Date(2026, 1, 23), name: "Mars Transit", type: "transit", details: "Mars enters Aquarius (Kumbha) - February 23, 2026, Monday at 11:57 AM"},
+            {date: new Date(2026, 3, 2), name: "Mars Transit", type: "transit", details: "Mars enters Pisces (Meena) - April 2, 2026, Thursday at 03:37 PM"},
+            {date: new Date(2026, 4, 11), name: "Mars Transit", type: "transit", details: "Mars enters Aries (Mesha) - May 11, 2026, Monday at 12:47 PM"},
+            {date: new Date(2026, 5, 21), name: "Mars Transit", type: "transit", details: "Mars enters Taurus (Vrishabha) - June 21, 2026, Sunday at 12:07 AM"},
+            {date: new Date(2026, 7, 2), name: "Mars Transit", type: "transit", details: "Mars enters Gemini (Mithuna) - August 2, 2026, Sunday at 10:59 PM"},
+            {date: new Date(2026, 8, 18), name: "Mars Transit", type: "transit", details: "Mars enters Cancer (Karka) - September 18, 2026, Friday at 04:44 PM"},
+            {date: new Date(2026, 10, 12), name: "Mars Transit", type: "transit", details: "Mars enters Leo (Simha) - November 12, 2026, Thursday at 08:30 PM"},
+            {date: new Date(2026, 0, 13), name: "Venus Transit", type: "transit", details: "Venus enters Capricorn (Makara) - January 13, 2026, Tuesday at 04:02 AM"},
+            {date: new Date(2026, 1, 6), name: "Venus Transit", type: "transit", details: "Venus enters Aquarius (Kumbha) - February 6, 2026, Friday at 01:15 AM"},
+            {date: new Date(2026, 2, 2), name: "Venus Transit", type: "transit", details: "Venus enters Pisces (Meena) - March 2, 2026, Monday at 01:01 AM"},
+            {date: new Date(2026, 2, 26), name: "Venus Transit", type: "transit", details: "Venus enters Aries (Mesha) - March 26, 2026, Thursday at 05:13 AM"},
+            {date: new Date(2026, 3, 19), name: "Venus Transit", type: "transit", details: "Venus enters Taurus (Vrishabha) - April 19, 2026, Sunday at 03:51 PM"},
+            {date: new Date(2026, 4, 14), name: "Venus Transit", type: "transit", details: "Venus enters Gemini (Mithuna) - May 14, 2026, Thursday at 10:58 AM"},
+            {date: new Date(2026, 5, 8), name: "Venus Transit", type: "transit", details: "Venus enters Cancer (Karka) - June 8, 2026, Monday at 05:47 PM"},
+            {date: new Date(2026, 6, 4), name: "Venus Transit", type: "transit", details: "Venus enters Leo (Simha) - July 4, 2026, Saturday at 07:18 PM"},
+            {date: new Date(2026, 7, 1), name: "Venus Transit", type: "transit", details: "Venus enters Virgo - August 1, 2026, Saturday at 09:33 AM"},
+            {date: new Date(2026, 8, 2), name: "Venus Transit", type: "transit", details: "Venus enters Libra (Tula) - September 2, 2026, Wednesday at 01:51 PM"},
+            {date: new Date(2026, 10, 6), name: "Venus Transit", type: "transit", details: "Venus enters Virgo (Retrograde) - November 6, 2026, Friday at 12:45 AM"},
+            {date: new Date(2026, 10, 22), name: "Venus Transit", type: "transit", details: "Venus enters Libra (Tula) - November 22, 2026, Sunday at 05:38 PM"}
+        ];
+
+        // Yoga Events
+        const yogaEvents = [
+            {date: new Date(2026, 0, 20), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - January 20, 2026, Tuesday - 01:06 PM to 02:42 AM, Jan 21"},
+            {date: new Date(2026, 2, 16), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - March 16, 2026, Monday - 05:56 AM to 06:46 AM"},
+            {date: new Date(2026, 2, 24), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - March 24, 2026, Tuesday - 07:04 PM to 06:38 AM, Mar 25"},
+            {date: new Date(2026, 5, 7), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - June 7, 2026, Sunday - 02:40 AM to 07:55 AM"},
+            {date: new Date(2026, 7, 9), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - August 9, 2026, Sunday - 11:04 AM to 02:43 PM"},
+            {date: new Date(2026, 9, 11), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - October 11, 2026, Sunday - 09:30 PM to 10:32 PM"},
+            {date: new Date(2026, 11, 5), name: "Dwipushkar Yoga", type: "yoga", details: "Dwipushkar Yoga - December 5, 2026, Saturday - 06:57 AM to 11:48 AM"},
+            {date: new Date(2026, 0, 3), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 09:05 AM, Jan 03, Ends: 05:16 AM, Jan 04"},
+            {date: new Date(2026, 0, 28), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 11:54 PM, Jan 28, Ends: 08:27 PM, Jan 29"},
+            {date: new Date(2026, 1, 23), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 10:19 AM, Feb 23, Ends: 07:24 AM, Feb 24"},
+            {date: new Date(2026, 2, 20), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 10:15 PM, Mar 20, Ends: 07:01 PM, Mar 21"},
+            {date: new Date(2026, 3, 15), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 01:25 PM, Apr 15, Ends: 10:38 AM, Apr 16"},
+            {date: new Date(2026, 4, 11), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 02:09 AM, May 11, Ends: 01:04 AM, May 12"},
+            {date: new Date(2026, 5, 5), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 09:43 AM, Jun 05, Ends: 10:05 AM, Jun 06"},
+            {date: new Date(2026, 5, 30), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 03:19 PM, Jun 30, Ends: 04:04 PM, Jul 01"},
+            {date: new Date(2026, 6, 25), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 09:09 PM, Jul 25, Ends: 10:05 PM, Jul 26"},
+            {date: new Date(2026, 7, 20), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 03:44 AM, Aug 20, Ends: 04:25 AM, Aug 21"},
+            {date: new Date(2026, 8, 14), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 12:47 PM, Sep 14, Ends: 12:20 PM, Sep 15"},
+            {date: new Date(2026, 9, 9), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 11:21 PM, Oct 09, Ends: 10:02 PM, Oct 10"},
+            {date: new Date(2026, 10, 4), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 08:01 AM, Nov 04, Ends: 06:26 AM, Nov 05"},
+            {date: new Date(2026, 10, 29), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 05:08 PM, Nov 29, Ends: 02:27 PM, Nov 30"},
+            {date: new Date(2026, 11, 25), name: "Indra Yoga", type: "yoga", details: "Indra Yoga - Begins: 08:28 AM, Dec 25, Ends: 04:16 AM, Dec 26"},
+            {date: new Date(2026, 3, 23), name: "Guru Pushya Yoga", type: "yoga", details: "Guru Pushya Yoga - April 23, 2026, Thursday - From 08:57 PM to 06:15 AM, April 24"},
+            {date: new Date(2026, 4, 21), name: "Guru Pushya Yoga", type: "yoga", details: "Guru Pushya Yoga - May 21, 2026, Thursday - From 06:02 AM to 02:49 AM, May 22"},
+            {date: new Date(2026, 5, 18), name: "Guru Pushya Yoga", type: "yoga", details: "Guru Pushya Yoga - June 18, 2026, Thursday - From 06:01 AM to 11:32 AM"},
+            {date: new Date(2026, 0, 4), name: "Ravi Pushya Yoga", type: "yoga", details: "Ravi Pushya Yoga - January 4, 2026, Sunday - From 03:11 PM to 07:13 AM, January 05"},
+            {date: new Date(2026, 1, 1), name: "Ravi Pushya Yoga", type: "yoga", details: "Ravi Pushya Yoga - February 1, 2026, Sunday - From 07:13 AM to 11:58 PM"},
+            {date: new Date(2026, 2, 1), name: "Ravi Pushya Yoga", type: "yoga", details: "Ravi Pushya Yoga - March 1, 2026, Sunday - From 06:58 AM to 08:34 AM"},
+            {date: new Date(2026, 9, 4), name: "Ravi Pushya Yoga", type: "yoga", details: "Ravi Pushya Yoga - October 4, 2026, Sunday - From 12:13 AM to 06:30 AM, October 05"},
+            {date: new Date(2026, 10, 1), name: "Ravi Pushya Yoga", type: "yoga", details: "Ravi Pushya Yoga - November 1, 2026, Sunday - From 06:39 AM to 04:30 AM, November 02"},
+            {date: new Date(2026, 10, 29), name: "Ravi Pushya Yoga", type: "yoga", details: "Ravi Pushya Yoga - November 29, 2026, Sunday - From 06:54 AM to 10:59 AM"},
+            {date: new Date(2026, 0, 4), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - January 4, 2026, Sunday - From 12:29 PM to 03:11 PM"},
+            {date: new Date(2026, 1, 24), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - February 24, 2026, Tuesday - From 07:01 AM to 07:01 AM"},
+            {date: new Date(2026, 1, 28), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - February 28, 2026, Saturday - From 06:59 AM to 09:35 AM"},
+            {date: new Date(2026, 3, 14), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - April 14, 2026, Tuesday - From 04:06 PM to 12:12 AM, April 15"},
+            {date: new Date(2026, 3, 19), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - April 19, 2026, Sunday - From 07:10 AM to 10:49 AM"},
+            {date: new Date(2026, 3, 28), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - April 28, 2026, Tuesday - From 06:12 AM to 06:51 PM"},
+            {date: new Date(2026, 4, 3), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - May 3, 2026, Sunday - From 12:49 AM to 07:10 AM"},
+            {date: new Date(2026, 5, 16), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - June 16, 2026, Tuesday - From 04:12 PM to 12:52 AM, June 17"},
+            {date: new Date(2026, 5, 21), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - June 21, 2026, Sunday - From 09:31 AM to 03:20 PM"},
+            {date: new Date(2026, 6, 11), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - July 11, 2026, Saturday - From 06:08 AM to 11:03 AM"},
+            {date: new Date(2026, 7, 29), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - August 29, 2026, Saturday - From 09:56 AM to 03:42 AM, August 30"},
+            {date: new Date(2026, 8, 12), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - September 12, 2026, Saturday - From 07:46 AM to 12:55 PM"},
+            {date: new Date(2026, 9, 27), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - October 27, 2026, Tuesday - From 03:39 PM to 04:06 AM, October 28"},
+            {date: new Date(2026, 9, 31), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - October 31, 2026, Saturday - From 04:57 PM to 05:39 AM, November 01"},
+            {date: new Date(2026, 11, 29), name: "Tripushkar Yoga", type: "yoga", details: "Tripushkar Yoga - December 29, 2026, Tuesday - From 03:43 PM to 07:11 AM, December 30"},
+            {date: new Date(2026, 0, 12), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - January 12, 2026, Monday - Start: 06:12 PM, Ultimately 07:05 PM, January 13"},
+            {date: new Date(2026, 1, 6), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - February 6, 2026 - Start: 11:37 PM, Ultimately 11:41 PM, February 07"},
+            {date: new Date(2026, 2, 4), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - March 4, 2026 - Start: 08:52 AM, Ultimately 07:46 AM, March 05"},
+            {date: new Date(2026, 2, 29), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - March 29, 2026, Sunday - Start: 06:20 PM, Ultimately 04:51 PM, March 30"},
+            {date: new Date(2026, 3, 24), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - April 24, 2026 - Start: 03:32 AM, Ultimately 01:24 AM, April 25"},
+            {date: new Date(2026, 4, 19), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - May 19, 2026 - Start: 05:49 PM, Ultimately 02:10 PM, May 20"},
+            {date: new Date(2026, 5, 14), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - June 14, 2026, Sunday - Start: 01:15 PM, Ultimately 08:56 AM, June 15"},
+            {date: new Date(2026, 6, 10), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - July 10, 2026 - Start: 07:15 AM, Ultimately 03:51 AM, July 11"},
+            {date: new Date(2026, 7, 4), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - August 4, 2026 - Start: 07:33 PM, Ultimately 05:29 PM, August 05"},
+            {date: new Date(2026, 7, 30), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - August 30, 2026, Sunday - Start: 05:22 AM, Ultimately 03:46 AM, August 31"},
+            {date: new Date(2026, 8, 24), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - September 24, 2026 - Start: 03:55 PM, Ultimately 02:51 PM, September 25"},
+            {date: new Date(2026, 9, 20), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - October 20, 2026 - Start: 12:35 AM, Ultimately 12:50 AM, October 21"},
+            {date: new Date(2026, 10, 14), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - November 14, 2026 - Start: 05:23 AM, Ultimately 06:22 AM, November 15"},
+            {date: new Date(2026, 11, 9), name: "Shoola Yoga", type: "yoga", details: "Shoola Yoga - December 9, 2026 - Start: 08:40 AM, Ultimately 09:24 AM, December 10"}
+        ];
+
+        // Planet Events (Asta/Begins)
+        const planetEvents = [
+            {date: new Date(2026, 10, 16), name: "Jupiter Asta", type: "planet", details: "Jupiter star sets - November 16, 2026, Friday at 06:17 AM"},
+            {date: new Date(2026, 3, 13), name: "Mars Star Asta", type: "planet", details: "Mars star sets - April 13, 2026, Monday at 05:22 AM"},
+            {date: new Date(2026, 0, 4), name: "Mercury Begins", type: "planet", details: "Mercury star begins to set - January 4, 2026, Sunday at 06:32 AM"},
+            {date: new Date(2026, 1, 28), name: "Mercury Begins", type: "planet", details: "Mercury star begins to set - February 28, 2026, Saturday at 07:33 PM"},
+            {date: new Date(2026, 4, 2), name: "Mercury Begins", type: "planet", details: "Mercury star begins to set - May 2, 2026, Saturday at 05:30 AM"},
+            {date: new Date(2026, 1, 5), name: "Mercury Asta", type: "planet", details: "Mercury star ends - February 5, 2026, Thursday at 07:20 PM"},
+            {date: new Date(2026, 2, 16), name: "Mercury Asta", type: "planet", details: "Mercury star ends - March 16, 2026, Monday at 05:51 AM"},
+            {date: new Date(2026, 4, 23), name: "Mercury Asta", type: "planet", details: "Mercury star ends - May 23, 2026, Saturday at 07:58 PM"},
+            {date: new Date(2026, 3, 17), name: "Saturn Asta", type: "planet", details: "Saturn star setting asta - April 17, 2026, Friday at 05:25 AM"},
+            {date: new Date(2026, 2, 13), name: "Saturn Begins", type: "planet", details: "Saturn star setting begins - March 13, 2026, Friday at 07:30 PM"}
+        ];
+
+        // Dwadashi Tithi Events (from Dwadashi tithi.txt)
+        const tithiEvents = [
+            {date: new Date(2026, 11, 31), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Dec 31, 5:01 am - Jan 01, 1:48 am"},
+            {date: new Date(2026, 11, 4), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Dec 04, 11:45 pm - Dec 06, 12:52 am"},
+            {date: new Date(2026, 11, 20), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Dec 20, 8:15 pm - Dec 21, 5:36 pm"},
+            {date: new Date(2026, 0, 14), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jan 14, 5:53 pm - Jan 15, 8:17 pm"},
+            {date: new Date(2026, 0, 29), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Jan 29, 1:55 pm - Jan 30, 11:09 am"},
+            {date: new Date(2026, 1, 13), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Feb 13, 2:26 pm - Feb 14, 4:02 pm"},
+            {date: new Date(2026, 1, 27), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi (Govinda Dwadashi) - Feb 27, 10:33 pm - Feb 28, 8:43 pm"},
+            {date: new Date(2026, 2, 15), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Mar 15, 9:17 am - Mar 16, 9:41 am"},
+            {date: new Date(2026, 2, 29), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Mar 29, 7:46 am - Mar 30, 7:10 am"},
+            {date: new Date(2026, 3, 14), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Apr 14, 1:09 am - Apr 15, 12:12 am"},
+            {date: new Date(2026, 3, 27), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Apr 27, 6:16 pm - Apr 28, 6:52 pm"},
+            {date: new Date(2026, 4, 13), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - May 13, 1:30 pm - May 14, 11:21 am"},
+            {date: new Date(2026, 4, 27), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - May 27, 6:22 am - May 28, 7:57 am"},
+            {date: new Date(2026, 5, 11), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jun 11, 10:36 pm - Jun 12, 7:37 pm"},
+            {date: new Date(2026, 5, 25), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi (Rama Lakshmana Dwadashi) - Jun 25, 8:09 pm - Jun 26, 10:22 pm"},
+            {date: new Date(2026, 6, 11), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Jul 11, 5:23 am - Jul 12, 2:04 am"},
+            {date: new Date(2026, 6, 25), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Jul 25, 11:34 am - Jul 26, 1:58 pm"},
+            {date: new Date(2026, 7, 9), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Aug 09, 11:05 am - Aug 10, 8:01 am"},
+            {date: new Date(2026, 7, 24), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Aug 24, 4:19 am - Aug 25, 6:21 am"},
+            {date: new Date(2026, 8, 7), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Sep 07, 5:04 pm - Sep 08, 2:43 pm"},
+            {date: new Date(2026, 8, 22), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Sep 22, 9:43 pm - Sep 23, 10:51 pm"},
+            {date: new Date(2026, 9, 7), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi - Oct 07, 12:35 am - Oct 07, 11:17 pm"},
+            {date: new Date(2026, 9, 22), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Oct 22, 2:48 pm - Oct 23, 2:36 pm"},
+            {date: new Date(2026, 10, 5), name: "Krishna Paksha Dwadashi", type: "tithi", details: "Krishna Paksha Dwadashi (Govatsa Dwadashi, Guru Dwadashi) - Nov 05, 10:36 am - Nov 06, 10:31 am"},
+            {date: new Date(2026, 10, 21), name: "Shukla Paksha Dwadashi", type: "tithi", details: "Shukla Paksha Dwadashi - Nov 21, 6:32 am - Nov 22, 4:57 am"}
         ];
 
         let currentMonth = new Date().getMonth();
         let currentYear = 2026;
         let selectedDate = new Date();
-
         const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
         function getEventsForDate(date) {
@@ -535,7 +738,6 @@
             dateStart.setHours(0, 0, 0, 0);
             const dateEnd = new Date(date);
             dateEnd.setHours(23, 59, 59, 999);
-
             const events = [];
 
             // Bhadra periods
@@ -544,41 +746,62 @@
                     const isBegin = period.start.toDateString() === date.toDateString();
                     const isEnd = period.end.toDateString() === date.toDateString();
                     if (isBegin && !isEnd) {
-                        events.push({name: "Bhadra begins", type: "begins"});
+                        events.push({name: "Bhadra begins", type: "begins", details: period.details, category: "bhadra"});
                     } else if (isEnd && !isBegin) {
-                        events.push({name: "Bhadra ends", type: "ends"});
+                        events.push({name: "Bhadra ends", type: "ends", details: period.details, category: "bhadra"});
                     } else if (isBegin && isEnd) {
-                        events.push({name: "Bhadra begins", type: "begins"});
-                        events.push({name: "Bhadra ends", type: "ends"});
+                        events.push({name: "Bhadra begins", type: "begins", details: period.details, category: "bhadra"});
+                        events.push({name: "Bhadra ends", type: "ends", details: period.details, category: "bhadra"});
                     }
                 }
             });
 
-            // Amavasya
-            amavasyaEvents.forEach(event => {
-                if (event.date.toDateString() === date.toDateString()) {
-                    events.push({name: event.name, type: event.type});
-                }
-            });
-
-            // Purnima
+            // Purnima events
             purnimaEvents.forEach(event => {
                 if (event.date.toDateString() === date.toDateString()) {
-                    events.push({name: event.name, type: event.type});
+                    events.push(event);
                 }
             });
 
-            // Dwipushkar Yoga
-            dwipushkarYogaEvents.forEach(event => {
+            // Amavasya events
+            amavasyaEvents.forEach(event => {
                 if (event.date.toDateString() === date.toDateString()) {
-                    events.push({name: event.name, type: event.type});
+                    events.push(event);
                 }
             });
 
-            // Indra Yoga
-            indraYogaEvents.forEach(event => {
+            // Festival events
+            festivalEvents.forEach(event => {
                 if (event.date.toDateString() === date.toDateString()) {
-                    events.push({name: event.name, type: event.type});
+                    events.push(event);
+                }
+            });
+
+            // Transit events
+            transitEvents.forEach(event => {
+                if (event.date.toDateString() === date.toDateString()) {
+                    events.push(event);
+                }
+            });
+
+            // Yoga events
+            yogaEvents.forEach(event => {
+                if (event.date.toDateString() === date.toDateString()) {
+                    events.push(event);
+                }
+            });
+
+            // Planet events
+            planetEvents.forEach(event => {
+                if (event.date.toDateString() === date.toDateString()) {
+                    events.push(event);
+                }
+            });
+
+            // Tithi events
+            tithiEvents.forEach(event => {
+                if (event.date.toDateString() === date.toDateString()) {
+                    events.push(event);
                 }
             });
 
@@ -588,19 +811,15 @@
         function renderCalendar() {
             const datesGrid = document.getElementById('datesGrid');
             datesGrid.innerHTML = '';
-
             const firstDay = new Date(currentYear, currentMonth, 1);
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
             const startDate = new Date(firstDay);
             startDate.setDate(startDate.getDate() - startDate.getDay());
-
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
             for (let i = 0; i < 42; i++) {
                 const cellDate = new Date(startDate);
                 cellDate.setDate(startDate.getDate() + i);
-                
                 const isCurrentMonth = cellDate.getMonth() === currentMonth;
                 const isToday = cellDate.getTime() === today.getTime();
                 const events = getEventsForDate(cellDate);
@@ -620,8 +839,18 @@
                     else if (event.type === 'purnima') className = 'period-purnima';
                     else if (event.type === 'amavasya') className = 'period-amavasya';
                     else if (event.type === 'yoga') className = 'period-yoga';
+                    else if (event.type === 'festival') className = 'period-festival';
+                    else if (event.type === 'transit') className = 'period-transit';
+                    else if (event.type === 'planet') className = 'period-planet';
+                    else if (event.type === 'tithi') className = 'period-tithi';
                     
-                    return `<span class="${className}">${event.name}</span>`;
+                    // Shorten long names for display
+                    let displayName = event.name;
+                    if (displayName.length > 15) {
+                        displayName = displayName.substring(0, 12) + '...';
+                    }
+                    
+                    return `<span class="${className}" title="${event.name}">${displayName}</span>`;
                 }).join('<br>');
 
                 cell.innerHTML = `
@@ -644,7 +873,6 @@
         function updateNotes() {
             const notesContent = document.getElementById('notesContent');
             const events = getEventsForDate(selectedDate);
-            
             const dateStr = selectedDate.toLocaleDateString('en-US', { 
                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
             });
@@ -654,9 +882,109 @@
             if (events.length === 0) {
                 html += '<div class="notes-detail">No events on this date.</div>';
             } else {
+                // Group events by category for better organization
+                const grouped = {
+                    festivals: [],
+                    purnima: [],
+                    amavasya: [],
+                    bhadra: [],
+                    transits: [],
+                    yogas: [],
+                    planets: [],
+                    tithis: []
+                };
+
                 events.forEach(event => {
-                    html += `<div class="notes-detail"><strong>${event.name}</strong></div>`;
+                    if (event.type === 'festival') grouped.festivals.push(event);
+                    else if (event.type === 'purnima') grouped.purnima.push(event);
+                    else if (event.type === 'amavasya') grouped.amavasya.push(event);
+                    else if (event.category === 'bhadra' || event.type === 'begins' || event.type === 'ends') grouped.bhadra.push(event);
+                    else if (event.type === 'transit') grouped.transits.push(event);
+                    else if (event.type === 'yoga') grouped.yogas.push(event);
+                    else if (event.type === 'planet') grouped.planets.push(event);
+                    else if (event.type === 'tithi') grouped.tithis.push(event);
                 });
+
+                // Display in organized order
+                if (grouped.festivals.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #d32f2f;">Festivals:</div>';
+                    grouped.festivals.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.purnima.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #1565c0;">Purnima:</div>';
+                    grouped.purnima.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.amavasya.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #7b1fa2;">Amavasya:</div>';
+                    grouped.amavasya.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.bhadra.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #2e7d32;">Bhadra:</div>';
+                    grouped.bhadra.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.transits.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #1976d2;">Planet Transits:</div>';
+                    grouped.transits.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.yogas.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #f57c00;">Yoga Days:</div>';
+                    grouped.yogas.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.planets.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #388e3c;">Planet Events:</div>';
+                    grouped.planets.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
+
+                if (grouped.tithis.length > 0) {
+                    html += '<div style="margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: #7b1fa2;">Tithi:</div>';
+                    grouped.tithis.forEach(event => {
+                        html += `<div class="notes-detail">
+                            <strong>${event.name}</strong>
+                            ${event.details ? `<span>${event.details}</span>` : ''}
+                        </div>`;
+                    });
+                }
             }
 
             notesContent.innerHTML = html;
@@ -685,7 +1013,6 @@
         async function downloadPDF() {
             const { jsPDF } = window.jspdf;
             const container = document.querySelector('.calendar-container');
-            
             const loading = document.createElement('div');
             loading.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:10000;';
             loading.innerHTML = '<p>Generating PDF...</p>';
@@ -697,12 +1024,10 @@
                     useCORS: true,
                     backgroundColor: '#ffffff'
                 });
-
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF('landscape', 'mm', 'a4');
                 const imgWidth = 297;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                
                 pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
                 pdf.save(`Vedic_Calendar_${monthNames[currentMonth]}_${currentYear}.pdf`);
             } catch (error) {
@@ -726,3 +1051,4 @@
     </script>
 </body>
 </html>
+
